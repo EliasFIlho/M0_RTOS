@@ -1,4 +1,4 @@
 ../Core/Src/scheduler.c:16:8:attach_task	2
 ../Core/Src/scheduler.c:26:6:Yield	1
 ../Core/Src/scheduler.c:31:6:scheduler_start	2
-../Core/Src/scheduler.c:44:6:run_scheduler	2
+../Core/Src/scheduler.c:52:6:run_scheduler	2

@@ -38,9 +38,15 @@ void scheduler_start(){
 	current_running_task->state = RUNNING;
 	scheduler.scheduler_index = 0;
 	__set_PSP((uint32_t)current_running_task->sp);
+	__DSB();
 	__set_CONTROL(CONTROL_SPSEL_Msk);
+	__enable_irq();
 	__ISB();
-	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+	__asm volatile (
+			" .syntax unified     \n"
+			"svc #0 			  \n"
+
+	);
 }
 
 void run_scheduler(){

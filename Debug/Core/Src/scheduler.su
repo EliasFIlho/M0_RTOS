@@ -1,4 +1,4 @@
 ../Core/Src/scheduler.c:16:8:attach_task	16	static
 ../Core/Src/scheduler.c:26:6:Yield	8	static
 ../Core/Src/scheduler.c:31:6:scheduler_start	16	static,ignoring_inline_asm
-../Core/Src/scheduler.c:44:6:run_scheduler	8	static
+../Core/Src/scheduler.c:52:6:run_scheduler	8	static

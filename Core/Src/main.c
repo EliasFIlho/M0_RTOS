@@ -35,9 +35,12 @@ static void setup_irq_priorities(){
 Task_t task1;
 Task_t task2;
 
+static volatile uint32_t count1 = 0;
+static volatile uint32_t count2 = 0;
+
 
 static void task2_handler(void *parameter){
-	uint32_t count2 = 0;
+
 	while(1){
 		count2++;
 		Yield();
@@ -45,20 +48,50 @@ static void task2_handler(void *parameter){
 }
 
 static void task1_handler(void *parameter){
-	uint32_t count1 = 0;
+
 	while(1){
 		count1++;
 		Yield();
 	}
 }
 
+void SVC_Handler(void) __attribute__((naked));
+void SVC_Handler(void){
+	__asm volatile (
+			" .global current_running_task                    \n"
+			" .syntax unified                                 \n"
+			"ldr r0, =0xFFFFFFFD 		\n"
+			"mov lr, r0					\n"
+			" ldr r1, =current_running_task \n"
+			" ldr r1, [r1]             \n"
+			" ldr r0, [r1]             \n"
+			" mov r3, r0               \n"
+
+			" adds r0, #16             \n"
+			" ldmia r0!, {r4-r7}       \n"
+			" mov r8, r4               \n"
+			" mov r9, r5               \n"
+			" mov r10, r6              \n"
+			" mov r11, r7              \n"
+	        " mov r0, r3               \n"
+	        " ldmia r0!, {r4-r7}       \n"
+			" adds r3, #32             \n"
+			" msr psp, r3              \n"
+	        "bx lr                    \n"
+
+	);
+}
+
+
 void PendSV_Handler(void) __attribute__((naked));
 void PendSV_Handler(void)
 {
 
     __asm volatile (
+        " .global current_running_task                    \n"
+        " .syntax unified                                 \n"
         " mrs r0, psp              \n"
-        " sub r0, r0, #32          \n"
+        " subs r0, r0, #32          \n"
         " mov r3, r0               \n"
 
         " stmia r0!, {r4-r7}       \n"
@@ -70,17 +103,17 @@ void PendSV_Handler(void)
         " ldr r1, =current_running_task \n"
         " ldr r1, [r1]             \n"
         " str r3, [r1]             \n"
-    	 "mov r4,lr				   \n"
         " cpsid i                  \n"
         " bl run_scheduler         \n"
         " cpsie i                  \n"
-    	"mov lr,r4				   \n"
+    	"ldr r0, =0xFFFFFFFD 		\n"
+    	"mov lr, r0					\n"
         " ldr r1, =current_running_task \n"
         " ldr r1, [r1]             \n"
         " ldr r0, [r1]             \n"
         " mov r3, r0               \n"
 
-        " add r0, #16             \n"
+        " adds r0, #16             \n"
         " ldmia r0!, {r4-r7}       \n"
         " mov r8, r4               \n"
         " mov r9, r5               \n"
@@ -90,7 +123,7 @@ void PendSV_Handler(void)
         " mov r0, r3               \n"
         " ldmia r0!, {r4-r7}       \n"
 
-        " add r3, #32             \n"
+        " adds r3, #32             \n"
         " msr psp, r3              \n"
 
         "bx lr                    \n"
@@ -111,7 +144,7 @@ int main(){
 	attach_task(&task2);
 
 
-	__enable_irq();
+
 	scheduler_start();
 	while(1){
 	}

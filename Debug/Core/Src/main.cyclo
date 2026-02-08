@@ -2,7 +2,8 @@
 ../Core/Src/main.c:12:6:SysTick_Handler	1
 ../Core/Src/main.c:18:13:config_systick	1
 ../Core/Src/main.c:29:13:setup_irq_priorities	1
-../Core/Src/main.c:39:13:task2_handler	1
-../Core/Src/main.c:47:13:task1_handler	1
-../Core/Src/main.c:56:6:PendSV_Handler	1
-../Core/Src/main.c:100:5:main	1
+../Core/Src/main.c:42:13:task2_handler	1
+../Core/Src/main.c:50:13:task1_handler	1
+../Core/Src/main.c:59:6:SVC_Handler	1
+../Core/Src/main.c:87:6:PendSV_Handler	1
+../Core/Src/main.c:134:5:main	1
