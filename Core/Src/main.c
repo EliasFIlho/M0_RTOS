@@ -7,13 +7,11 @@
 
 #define CPU_CLOCK_HZ        8000000UL
 #define SYSTICK_1MS_RELOAD  ((CPU_CLOCK_HZ / 1000UL) - 1UL)
+static volatile uint32_t count1 = 0;
+static volatile uint32_t count2 = 0;
+static volatile uint32_t count3 = 0;
 
 
-void SysTick_Handler(void){
-	static volatile uint32_t tick;
-	tick++;
-	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //Trigger PendSV exception to context switch
-}
 
 static void config_systick(){
 	WRITE_REG(SysTick->CTRL,0);
@@ -34,26 +32,37 @@ static void setup_irq_priorities(){
 
 Task_t task1;
 Task_t task2;
-
-static volatile uint32_t count1 = 0;
-static volatile uint32_t count2 = 0;
+Task_t task3;
 
 
-static void task2_handler(void *parameter){
 
-	while(1){
-		count2++;
-		Yield();
-	}
-}
 
 static void task1_handler(void *parameter){
 
 	while(1){
 		count1++;
-		Yield();
+		Task_Delay(1000);
 	}
 }
+
+static void task2_handler(void *parameter){
+
+	while(1){
+		count2++;
+		Task_Delay(2000);
+	}
+}
+
+
+static void task3_handler(void *parameter){
+
+	while(1){
+		count3++;
+		Task_Delay(3000);
+	}
+}
+
+
 
 void SVC_Handler(void) __attribute__((naked));
 void SVC_Handler(void){
@@ -134,16 +143,16 @@ int main(){
     DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_IWDG_STOP;
     DBGMCU->APB1FZ |= DBGMCU_APB1_FZ_DBG_WWDG_STOP;
 	setup_irq_priorities();
-	//config_systick(); // Not used right now since i'm using yield to request swap context
+	config_systick(); // Not used right now since i'm using yield to request swap context
 
 	//Start tasks
 	Task_Create(&task1, task1_handler, NULL);
 	Task_Create(&task2, task2_handler, NULL);
+	Task_Create(&task3, task3_handler, NULL);
 
 	attach_task(&task1);
 	attach_task(&task2);
-
-
+	attach_task(&task3);
 
 	scheduler_start();
 	while(1){

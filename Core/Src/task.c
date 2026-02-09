@@ -7,7 +7,7 @@
 
 
 #include "task.h"
-
+#include "scheduler.h"
 
 void Task_Create(Task_t *task, TaskHandle_t task_handler, void *param)
 {
@@ -34,3 +34,15 @@ void Task_Create(Task_t *task, TaskHandle_t task_handler, void *param)
     task->sp = &task->task_stack[top];
     task->state = READY;
 }
+
+
+void Task_Delay(Ticks_t ticks){
+	__disable_irq();
+	current_running_task->state = BLOCKED;
+	current_running_task->delay_ticks = ticks;
+	__enable_irq();
+	Yield();
+}
+
+
+

@@ -13,8 +13,11 @@
 #define MAX_TASKS 8
 
 
+extern volatile Task_t * current_running_task;
+
 typedef struct {
 	Task_t * tasks_TCB[MAX_TASKS];
+	Task_t * idle_task;
 	uint8_t number_of_tasks;
 	uint8_t scheduler_index;
 }Scheduler_t;
