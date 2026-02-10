@@ -1,4 +1,4 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/kernel.h \
+Core/Src/kernel.o: ../Core/Src/kernel.c ../Core/Inc/kernel.h \
  ../Core/Inc/task.h \
  ../Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f0xx.h \
  ../Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h \

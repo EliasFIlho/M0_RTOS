@@ -27,4 +27,7 @@ void run_scheduler();
 void scheduler_start();
 void Yield();
 
+void PendSV_Handler(void) __attribute__((naked));
+void SVC_Handler(void) __attribute__((naked));
+
 #endif /* INC_SCHEDULER_H_ */

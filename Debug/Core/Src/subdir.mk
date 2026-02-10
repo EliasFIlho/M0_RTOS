@@ -5,6 +5,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/kernel.c \
 ../Core/Src/main.c \
 ../Core/Src/scheduler.c \
 ../Core/Src/syscalls.c \
@@ -13,6 +14,7 @@ C_SRCS += \
 ../Core/Src/task.c 
 
 OBJS += \
+./Core/Src/kernel.o \
 ./Core/Src/main.o \
 ./Core/Src/scheduler.o \
 ./Core/Src/syscalls.o \
@@ -21,6 +23,7 @@ OBJS += \
 ./Core/Src/task.o 
 
 C_DEPS += \
+./Core/Src/kernel.d \
 ./Core/Src/main.d \
 ./Core/Src/scheduler.d \
 ./Core/Src/syscalls.d \
@@ -36,7 +39,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/scheduler.cyclo ./Core/Src/scheduler.d ./Core/Src/scheduler.o ./Core/Src/scheduler.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f0xx.cyclo ./Core/Src/system_stm32f0xx.d ./Core/Src/system_stm32f0xx.o ./Core/Src/system_stm32f0xx.su ./Core/Src/task.cyclo ./Core/Src/task.d ./Core/Src/task.o ./Core/Src/task.su
+	-$(RM) ./Core/Src/kernel.cyclo ./Core/Src/kernel.d ./Core/Src/kernel.o ./Core/Src/kernel.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/scheduler.cyclo ./Core/Src/scheduler.d ./Core/Src/scheduler.o ./Core/Src/scheduler.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f0xx.cyclo ./Core/Src/system_stm32f0xx.d ./Core/Src/system_stm32f0xx.o ./Core/Src/system_stm32f0xx.su ./Core/Src/task.cyclo ./Core/Src/task.d ./Core/Src/task.o ./Core/Src/task.su
 
 .PHONY: clean-Core-2f-Src
 
